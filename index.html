@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Lochcarron Weather Planner</title>
+    <script>
+      (() => {
+        try {
+          const mode = localStorage.getItem("lochcarron.themeMode") || "auto";
+          const systemDark = window.matchMedia && window.matchMedia("(prefers-color-scheme: dark)").matches;
+          document.documentElement.dataset.themeMode = mode;
+          document.documentElement.dataset.theme = mode === "dark" || (mode === "auto" && systemDark) ? "dark" : "light";
+          document.documentElement.classList.add("is-loading");
+        } catch (error) {
+          document.documentElement.dataset.theme = "light";
+          document.documentElement.dataset.themeMode = "auto";
+        }
+      })();
+    </script>
+    <link rel="stylesheet" href="styles.css?v=20260629-13">
+  </head>
+  <body>
+    <div id="dataNotice" class="statusnotice" hidden></div>
+    <header class="hero">
+      <img src="assets/lochcarron-hero-real.jpg" alt="Lochcarron village shoreline beside Loch Carron" class="hero__image">
+      <div class="hero__shade"></div>
+      <nav class="topbar" aria-label="Primary">
+        <strong>Lochcarron Weather Planner.</strong>
+        <span id="lochcarronClock" class="localclock" aria-label="Current date and time in Lochcarron">Lochcarron time</span>
+        <div class="theme-toggle" role="group" aria-label="Colour mode">
+          <button type="button" data-theme-choice="auto" aria-pressed="true">Auto</button>
+          <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+          <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+        </div>
+      </nav>
+      <section class="hero__content">
+        <div id="heroToday" class="hero__today" aria-label="Today's Lochcarron conditions">
+          <article class="hero-card hero-weather">
+            <span>Today's Weather</span>
+            <div class="hero-weather__split">
+              <div class="hero-weather__section hero-weather__live">
+                <small>Live now</small>
+                <div class="hero-weather__main">
+                  <div class="forecasticon" id="heroWeatherIcon" aria-hidden="true">?</div>
+                  <strong id="heroWeather">Loading</strong>
+                </div>
+                <p id="heroLiveDetail">Loading</p>
+                <small id="heroWeatherUpdated" class="liveupdated">Updates every 15 minutes</small>
+              </div>
+              <div class="hero-weather__section hero-weather__forecast">
+                <small>Today's forecast</small>
+                <strong id="heroForecastRain">Loading</strong>
+                <p id="heroForecastDetail">Loading</p>
+              </div>
+            </div>
+          </article>
+          <article class="hero-card hero-tides">
+            <span>Today's Tides</span>
+            <div id="heroTides" class="tidegrid"></div>
+          </article>
+          <article class="hero-card hero-hourly">
+            <div class="hero-hourly__head">
+              <span>Next 24 hours</span>
+              <strong id="hourlySummary">Loading</strong>
+            </div>
+            <div id="hourlyTabs" class="hourlytabs" aria-label="Choose a forecast day"></div>
+            <div id="hourlyChart" class="hourlychart" aria-label="Hourly temperature and rain forecast"></div>
+            <div id="hourlyTooltip" class="hourlytooltip" hidden></div>
+          </article>
+          <article class="hero-card hero-marine">
+            <span>Marine conditions</span>
+            <strong id="heroMarineStatus">Loading</strong>
+            <p id="heroMarineDetail">Loading</p>
+            <p class="warningline">Rough tide indicator. Not for navigation.</p>
+            <small id="heroMarineUpdated" class="liveupdated">Updates every 15 minutes</small>
+          </article>
+          <article class="hero-card hero-small daylightfact">
+            <span>Daylight</span>
+            <div id="heroDaylight" class="daylightpanel"></div>
+          </article>
+          <article class="hero-card hero-small moonfact">
+            <span>Moon</span>
+            <div class="mooncopy">
+              <strong id="heroMoon">Loading</strong>
+              <p id="heroMoonText">Loading</p>
+            </div>
+            <div id="heroMoonIcon" class="moonphase" aria-hidden="true"></div>
+          </article>
+        </div>
+      </section>
+    </header>
+
+    <main>
+      <section id="coming" class="section outlook" aria-label="Coming up">
+        <div class="outlook__head">
+          <p class="kicker">Coming up</p>
+          <h2>What is coming up.</h2>
+          <p>Quick forward-looking cards for people deciding when to head out, arrive, paddle, walk or keep a cosy backup plan.</p>
+        </div>
+        <div class="outlook__grid">
+          <article class="panel">
+            <div class="panelhead">
+              <span>Weather forecast</span>
+              <strong id="weatherRangeLabel">Next days</strong>
+            </div>
+            <div id="sevenWeather" class="forecaststrip"></div>
+            <p class="source-note">Scroll sideways. Live Open-Meteo forecast for Lochcarron coordinates, with saved fallback if offline.</p>
+          </article>
+          <article class="panel">
+            <div class="panelhead">
+              <span>Tide guide</span>
+              <strong id="tideRangeLabel">Next 30 days</strong>
+            </div>
+            <div id="sevenTides" class="forecaststrip"></div>
+            <p class="source-note">Scroll sideways. Estimated visitor-planning tide windows. Marine conditions are a rough indicator only. Not for navigation.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="rain" class="section">
+        <div class="section__intro">
+          <p class="kicker">Rainfall history</p>
+          <h2>What has Lochcarron weather looked like?</h2>
+          <p>Choose recent detail or the long record, then tap a bar to see what it means for a visitor.</p>
+        </div>
+        <div class="toolgrid">
+          <aside class="panel controls">
+            <div class="choicegroup" aria-labelledby="rangeLabel">
+              <span id="rangeLabel">Data range</span>
+              <div id="rainRangeChoices" class="choicegrid" role="group" aria-label="Rainfall data range">
+                <button class="choicebox is-active" type="button" data-range="recent">Recent detail<br><small>2017 to today</small></button>
+                <button class="choicebox" type="button" data-range="long">Long history<br><small>1950 to today</small></button>
+              </div>
+            </div>
+            <div class="choicegroup" aria-labelledby="viewLabel">
+              <span id="viewLabel">View</span>
+              <div id="rainModeChoices" class="choicegrid" role="group" aria-label="Rainfall view">
+                <button class="choicebox" type="button" data-mode="week">Weeks</button>
+                <button class="choicebox is-active" type="button" data-mode="month">Average month</button>
+                <button class="choicebox" type="button" data-mode="season">Seasons</button>
+                <button class="choicebox" type="button" data-mode="year">Years</button>
+              </div>
+            </div>
+            <div id="yearFilterGroup" class="choicegroup" aria-labelledby="yearLabel">
+              <span id="yearLabel">Years</span>
+              <div id="yearChoices" class="choicegrid choicegrid--years" role="group" aria-label="Rainfall years"></div>
+            </div>
+            <div class="meter">
+              <span>Rain comfort</span>
+              <div><i id="comfortBar"></i></div>
+              <strong id="comfortText">Loading</strong>
+            </div>
+          </aside>
+          <article class="panel chartpanel">
+            <div class="charttitle">
+              <small id="chartUnit">Millimetres per day</small>
+              <span id="chartTitle">Average daily rainfall</span>
+            </div>
+            <p id="chartSource" class="data-source">Loading rainfall data.</p>
+            <canvas id="rainChart" width="1100" height="520" aria-label="Rainfall chart"></canvas>
+            <div id="chartTooltip" class="charttooltip" hidden></div>
+            <div id="chartDetail" class="detail"></div>
+          </article>
+        </div>
+      </section>
+
+      <section id="date" class="section">
+        <div class="section__intro">
+          <p class="kicker">Date facts</p>
+          <h2>Ask about any day.</h2>
+          <p>What was the weather the day you were born?</p>
+        </div>
+        <div class="datefinder">
+          <div class="panel controls">
+            <div class="choicegroup" aria-labelledby="dateRangeLabel">
+              <span id="dateRangeLabel">Data range</span>
+              <div id="dateRangeChoices" class="choicegrid" role="group" aria-label="Date fact data range">
+                <button class="choicebox is-active" type="button" data-date-range="recent">Recent detail<br><small>2017 to today</small></button>
+                <button class="choicebox" type="button" data-date-range="long">Long history<br><small>1950 to today</small></button>
+              </div>
+            </div>
+            <div class="choicegroup">
+              <span>Date</span>
+              <input id="factDate" type="date" hidden>
+              <div class="dateparts" aria-label="Choose a date">
+                <label>
+                  <small>Year</small>
+                  <select id="factYear"></select>
+                </label>
+                <label>
+                  <small>Month</small>
+                  <select id="factMonth"></select>
+                </label>
+                <label>
+                  <small>Day</small>
+                  <select id="factDay"></select>
+                </label>
+              </div>
+            </div>
+            <p id="dateRangeNote" class="data-source">Recent detailed view: 2017 onwards uses higher-resolution modern Open-Meteo archive data.</p>
+            <button id="factButton" class="button button--primary" type="button">Show the day</button>
+          </div>
+          <article class="panel datecard">
+            <div id="dateFacts"></div>
+          </article>
+        </div>
+      </section>
+
+      <section class="section moonreference" aria-label="Moon phase guide">
+        <div class="section__intro">
+          <p class="kicker">Moon guide</p>
+          <h2>The 8 moon phases.</h2>
+          <p>A quick guide to the moon thumbnails used in the planner.</p>
+        </div>
+        <div class="panel moon-phase-panel">
+          <article class="moon-phase-row">
+            <div>
+              <h3>New Moon</h3>
+              <p>The Moon is not visible as the side facing Earth is not illuminated.</p>
+            </div>
+            <div class="moonphase phase-new" aria-hidden="true"></div>
+          </article>
+          <article class="moon-phase-row">
+            <div>
+              <h3>Waxing Crescent</h3>
+              <p>A small portion of the Moon is lit and getting larger.</p>
+            </div>
+            <div class="moonphase phase-waxing-crescent" aria-hidden="true"></div>
+          </article>
+          <article class="moon-phase-row">
+            <div>
+              <h3>First Quarter</h3>
+              <p>Half of the Moon is lit with the right side illuminated.</p>
+            </div>
+            <div class="moonphase phase-first-quarter" aria-hidden="true"></div>
+          </article>
+          <article class="moon-phase-row">
+            <div>
+              <h3>Waxing Gibbous</h3>
+              <p>More than half of the Moon is lit and still getting larger.</p>
+            </div>
+            <div class="moonphase phase-waxing-gibbous" aria-hidden="true"></div>
+          </article>
+          <article class="moon-phase-row">
+            <div>
+              <h3>Full Moon</h3>
+              <p>The whole face of the Moon is illuminated.</p>
+            </div>
+            <div class="moonphase phase-full" aria-hidden="true"></div>
+          </article>
+          <article class="moon-phase-row">
+            <div>
+              <h3>Waning Gibbous</h3>
+              <p>More than half of the Moon is lit but the light is decreasing.</p>
+            </div>
+            <div class="moonphase phase-waning-gibbous" aria-hidden="true"></div>
+          </article>
+          <article class="moon-phase-row">
+            <div>
+              <h3>Last Quarter</h3>
+              <p>Half of the Moon is lit with the left side illuminated.</p>
+            </div>
+            <div class="moonphase phase-last-quarter" aria-hidden="true"></div>
+          </article>
+          <article class="moon-phase-row">
+            <div>
+              <h3>Waning Crescent</h3>
+              <p>A small portion of the Moon is lit and getting smaller.</p>
+            </div>
+            <div class="moonphase phase-waning-crescent" aria-hidden="true"></div>
+          </article>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <p>Weather data: Open-Meteo forecast, archive fallback, and Open-Meteo Marine for Lochcarron coordinates. Marine data is a rough indicator only, not for navigation. Photo: Wikimedia Commons, "Lochcarron - panoramio.jpg".</p>
+    </footer>
+
+    <script src="data/weather-data.js"></script>
+    <script src="app.js?v=20260629-13"></script>
+  </body>
+</html>
