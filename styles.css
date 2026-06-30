@@ -629,6 +629,52 @@ h2 {
   text-align: center;
 }
 
+.hero-hourly-tides {
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line);
+}
+
+.hero-hourly-tides__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 8px 0 12px;
+}
+
+.hero-hourly-tides__head span {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 900;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.hero-hourly-tides__head strong {
+  color: var(--ink);
+  font-size: clamp(1.1rem, 2vw, 1.55rem);
+}
+
+.hero-hourly-tides__weather {
+  display: flex;
+  gap: 10px;
+  margin: 0 0 16px;
+  padding: 0 2px 8px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.hero-hourly-tides__chart {
+  max-height: 270px;
+  overflow: hidden auto;
+}
+
+.hero-hourly-tides__chart .tideplanner-svg {
+  min-width: 720px;
+}
+
 .hourlytooltip {
   position: absolute;
   z-index: 3;
@@ -1084,6 +1130,222 @@ label {
   font-size: 0.72rem;
   font-style: normal;
   font-weight: 800;
+}
+
+.tideplanner-panel {
+  overflow: hidden;
+}
+
+.tide-tabs {
+  display: flex;
+  gap: 10px;
+  margin: 0 0 18px;
+  padding: 0 2px 8px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.tide-tab {
+  flex: 0 0 154px;
+  min-height: 196px;
+  margin: 0;
+  padding: 12px 10px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel) 70%, transparent);
+  color: var(--ink);
+  display: grid;
+  place-items: center;
+  gap: 4px;
+  font: inherit;
+  font-weight: 800;
+  text-align: center;
+  cursor: pointer;
+}
+
+.tide-tab[aria-selected="true"] {
+  border-color: var(--sea-dark);
+  background: var(--panel);
+  box-shadow: inset 0 -3px 0 var(--sea-dark);
+}
+
+.tide-tab span {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.92rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.tide-tab .forecasticon {
+  width: 52px;
+  height: 52px;
+  font-size: 1.9rem;
+}
+
+.tide-tab:not(:has(.forecasticon)) {
+  align-content: center;
+}
+
+.tide-tab strong {
+  color: var(--ink);
+  font-size: 1.1rem;
+  line-height: 1;
+}
+
+.tide-tab p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.tide-tab .windline {
+  color: var(--sea-dark);
+  font-weight: 850;
+}
+
+.tide-tab .daybadge {
+  margin-top: 3px;
+  padding: 4px 10px;
+  font-size: 0.82rem;
+}
+
+.tideplanner-date {
+  margin: 2px 0 18px;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.tideplanner-date strong {
+  color: var(--ink);
+}
+
+.tideplanner-weather {
+  display: flex;
+  gap: 10px;
+  margin: 0 0 20px;
+  padding: 0 2px 8px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+
+.tide-weather-hour {
+  flex: 0 0 64px;
+  display: grid;
+  justify-items: center;
+  gap: 4px;
+  padding: 6px 4px;
+  border-radius: 8px;
+  color: var(--muted);
+  text-align: center;
+  font-weight: 750;
+}
+
+.tide-weather-hour.is-night {
+  background: color-mix(in srgb, var(--sea-dark) 10%, transparent);
+}
+
+.tide-weather-hour.is-night .forecasticon {
+  background: color-mix(in srgb, var(--sea-dark) 16%, var(--soft-chip));
+}
+
+.tide-weather-hour span {
+  font-size: 0.78rem;
+  white-space: nowrap;
+}
+
+.tide-weather-hour .forecasticon {
+  width: 31px;
+  height: 31px;
+  font-size: 1.08rem;
+}
+
+.tide-weather-hour strong {
+  color: var(--ink);
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+.tide-weather-hour small,
+.tide-weather-hour em {
+  color: var(--muted);
+  font-size: 0.72rem;
+  font-style: normal;
+  line-height: 1;
+}
+
+.tideplanner-chart {
+  min-height: 330px;
+  overflow-x: auto;
+  padding: 6px 0 0;
+}
+
+.tideplanner-svg {
+  display: block;
+  min-width: 820px;
+  width: 100%;
+  height: auto;
+}
+
+.tideplanner-fill {
+  fill: url("#tidePlannerFill");
+}
+
+.tideplanner-line {
+  fill: none;
+  stroke: #286ff0;
+  stroke-width: 4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.tideplanner-tick line,
+.tideplanner-height line {
+  stroke: var(--line);
+  stroke-width: 1.4;
+}
+
+.tideplanner-tick text,
+.tideplanner-height text {
+  fill: var(--muted);
+  font-size: 13px;
+  font-weight: 750;
+  text-anchor: middle;
+}
+
+.tideplanner-height text {
+  text-anchor: start;
+}
+
+.tideplanner-event circle {
+  fill: #286ff0;
+  stroke: var(--panel);
+  stroke-width: 2;
+}
+
+.tideplanner-event text {
+  fill: var(--ink);
+  font-size: 14px;
+  font-weight: 850;
+  text-anchor: middle;
+}
+
+.tideplanner-now line {
+  stroke: #d94c3d;
+  stroke-width: 3;
+}
+
+.tideplanner-now circle {
+  fill: #d94c3d;
+  stroke: var(--panel);
+  stroke-width: 2;
+}
+
+.tideplanner-now text {
+  fill: #d94c3d;
+  font-size: 15px;
+  font-weight: 900;
 }
 
 .section {
