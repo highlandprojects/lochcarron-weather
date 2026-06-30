@@ -31,8 +31,14 @@ const WEATHER_CACHE_KEY = "lochcarron.openMeteo.weather.v6";
 const MARINE_CACHE_KEY = "lochcarron.openMeteo.marine.v1";
 const RAIN_ARCHIVE_CACHE_PREFIX = "lochcarron.openMeteo.rainArchive.v1.";
 const THEME_CACHE_KEY = "lochcarron.themeMode";
+const THOUGHTS_URL = "data/thoughts.json";
+const THOUGHT_FALLBACK = {
+  category: "Highland",
+  text: "The weather changes every day. The beauty of Lochcarron never does."
+};
 const LIVE_REFRESH_MS = 15 * 60 * 1000;
 const themeMedia = window.matchMedia ? window.matchMedia("(prefers-color-scheme: dark)") : null;
+let displayedThoughtDate = null;
 const RAIN_RANGES = {
   recent: {
     label: "Recent detailed view",
@@ -89,6 +95,57 @@ function setThemeMode(mode) {
 
 function cssVar(name) {
   return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+function lochcarronDateISO(date = new Date()) {
+  const parts = new Intl.DateTimeFormat("en-CA", {
+    timeZone: "Europe/London",
+    year: "numeric",
+    month: "2-digit",
+    day: "2-digit"
+  }).formatToParts(date).reduce((acc, part) => {
+    acc[part.type] = part.value;
+    return acc;
+  }, {});
+  return `${parts.year}-${parts.month}-${parts.day}`;
+}
+
+function thoughtIndexForDate(dateString, count) {
+  const [year, month, day] = dateString.split("-").map(Number);
+  const daysSinceEpoch = Math.floor(Date.UTC(year, month - 1, day) / 86400000);
+  return ((daysSinceEpoch % count) + count) % count;
+}
+
+function renderDailyThought(thought) {
+  const category = $("dailyThoughtCategory");
+  const text = $("dailyThoughtText");
+  if (!category || !text) return;
+  category.textContent = "Daily Thought";
+  text.textContent = thought.text;
+}
+
+async function loadDailyThought() {
+  const today = lochcarronDateISO();
+  try {
+    const response = await fetch(THOUGHTS_URL, { cache: "no-cache" });
+    if (!response.ok) throw new Error(`Could not load thoughts: ${response.status}`);
+    const thoughts = await response.json();
+    const approvedThoughts = Array.isArray(thoughts)
+      ? thoughts.filter((thought) => thought && Number.isFinite(Number(thought.id)) && thought.category && thought.text)
+      : [];
+    if (!approvedThoughts.length) throw new Error("No approved thoughts available");
+    renderDailyThought(approvedThoughts[thoughtIndexForDate(today, approvedThoughts.length)]);
+    displayedThoughtDate = today;
+  } catch (error) {
+    renderDailyThought(THOUGHT_FALLBACK);
+    displayedThoughtDate = today;
+  }
+}
+
+function refreshDailyThoughtIfNeeded() {
+  if (displayedThoughtDate !== lochcarronDateISO()) {
+    loadDailyThought().catch(() => renderDailyThought(THOUGHT_FALLBACK));
+  }
 }
 
 function parseOpenMeteo(json) {
@@ -566,14 +623,13 @@ function hourlyTabMarkup(tab) {
 
 function hourlyWindow(dateString = DATA.hourlyDate) {
   if (!DATA.hourly.length) return [];
-  const now = new Date();
   const today = todayISO();
   const chosenDate = dateString || today;
-  const start = chosenDate === today ? new Date(now.getTime() - 30 * 60000) : new Date(`${chosenDate}T00:00:00`);
+  const start = new Date(`${chosenDate}T00:00:00`);
   const end = new Date(start.getTime() + 24 * 60 * 60000);
   const base = DATA.hourly.filter((hour) => {
     const time = new Date(hour.time);
-    return time >= start && time <= end;
+    return time >= start && time < end;
   });
   const fallback = DATA.hourly.filter((hour) => hour.date === chosenDate);
   const source = base.length ? base : fallback;
@@ -1459,9 +1515,13 @@ function positionHourlyTooltip(point, tooltip, event) {
   tooltip.style.top = `${top}px`;
 }
 
+loadDailyThought().catch(() => renderDailyThought(THOUGHT_FALLBACK));
 updateLochcarronClock();
 applyThemeMode();
-setInterval(updateLochcarronClock, 60 * 1000);
+setInterval(() => {
+  updateLochcarronClock();
+  refreshDailyThoughtIfNeeded();
+}, 60 * 1000);
 
 loadData().catch((error) => {
   document.documentElement.classList.remove("is-loading");

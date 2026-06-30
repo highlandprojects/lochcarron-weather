@@ -18,7 +18,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260629-13">
+    <link rel="stylesheet" href="styles.css?v=20260630-1">
   </head>
   <body>
     <div id="dataNotice" class="statusnotice" hidden></div>
@@ -35,6 +35,12 @@
         </div>
       </nav>
       <section class="hero__content">
+        <article id="dailyThought" class="dailythought" aria-label="Highland Thought for Today">
+          <div>
+            <span id="dailyThoughtCategory">Daily Thought</span>
+            <p id="dailyThoughtText">Loading today's thought...</p>
+          </div>
+        </article>
         <div id="heroToday" class="hero__today" aria-label="Today's Lochcarron conditions">
           <article class="hero-card hero-weather">
             <span>Today's Weather</span>
@@ -279,6 +285,6 @@
     </footer>
 
     <script src="data/weather-data.js"></script>
-    <script src="app.js?v=20260629-13"></script>
+    <script src="app.js?v=20260630-1"></script>
   </body>
 </html>
