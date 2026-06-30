@@ -849,24 +849,28 @@ function shortDayDate(dateString) {
 
 function updateSevenDayOutlook() {
   const weatherDays = DATA.forecast.filter((day) => day.max != null && day.min != null);
-  $("weatherRangeLabel").textContent = weatherDays.length ? `Next ${weatherDays.length} days` : "Forecast";
+  const weatherRangeLabel = $("weatherRangeLabel");
+  const sevenWeather = $("sevenWeather");
+  if (weatherRangeLabel) weatherRangeLabel.textContent = weatherDays.length ? `Next ${weatherDays.length} days` : "Forecast";
   $("tideRangeLabel").textContent = "Next 30 days";
-  $("sevenWeather").innerHTML = weatherDays.length
-    ? weatherDays.map((day) => {
-      const windMph = kmhToMph(day.wind);
-      const gustMph = kmhToMph(day.gust);
-      return `
-      <div class="forecastcard" title="${dayName(day.date)}: ${day.rain.toFixed(1)} mm rain, ${day.min.toFixed(1)} to ${day.max.toFixed(1)} C, wind ${windMph == null ? "not available" : `${windMph.toFixed(0)} mph`}${gustMph == null ? "" : `, gusts ${gustMph.toFixed(0)} mph`}">
-        <span>${shortDay(day.date)}</span>
-        <div class="forecasticon" aria-hidden="true">${weatherIcon(day.rain)}</div>
-        <strong>${Math.round(day.max)} C</strong>
-        <p>${day.rain.toFixed(1)} mm</p>
-        <p class="windline">${windMph == null ? "Wind n/a" : `${windMph.toFixed(0)} mph wind`}</p>
-        <div class="daybadge">${rainMood(day.rain)}</div>
-      </div>
-    `;
-    }).join("")
-    : `<div class="forecastcard"><p>Forecast data is not available in this saved copy.</p></div>`;
+  if (sevenWeather) {
+    sevenWeather.innerHTML = weatherDays.length
+      ? weatherDays.map((day) => {
+        const windMph = kmhToMph(day.wind);
+        const gustMph = kmhToMph(day.gust);
+        return `
+        <div class="forecastcard" title="${dayName(day.date)}: ${day.rain.toFixed(1)} mm rain, ${day.min.toFixed(1)} to ${day.max.toFixed(1)} C, wind ${windMph == null ? "not available" : `${windMph.toFixed(0)} mph`}${gustMph == null ? "" : `, gusts ${gustMph.toFixed(0)} mph`}">
+          <span>${shortDay(day.date)}</span>
+          <div class="forecasticon" aria-hidden="true">${weatherIcon(day.rain)}</div>
+          <strong>${Math.round(day.max)} C</strong>
+          <p>${day.rain.toFixed(1)} mm</p>
+          <p class="windline">${windMph == null ? "Wind n/a" : `${windMph.toFixed(0)} mph wind`}</p>
+          <div class="daybadge">${rainMood(day.rain)}</div>
+        </div>
+      `;
+      }).join("")
+      : `<div class="forecastcard"><p>Forecast data is not available in this saved copy.</p></div>`;
+  }
 
   const start = weatherDays[0]?.date || todayISO();
   const tideDays = Array.from({ length: 30 }, (_, i) => addDays(start, i));
