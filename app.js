@@ -534,10 +534,14 @@ function updateHeroToday() {
     ? `${weatherConditionLabel(weather.weatherCode)} · ${windMph == null ? "Wind n/a" : `${windMph.toFixed(0)} mph wind`}`
     : "Live weather unavailable";
   $("heroWeatherUpdated").textContent = liveUpdateText(DATA.weatherUpdatedAt, DATA.weatherSource);
-  $("heroForecastRain").textContent = weather ? `${weather.rain.toFixed(1)} mm rain` : "Forecast unavailable";
-  $("heroForecastDetail").textContent = weather
-    ? `${weather.min?.toFixed(1) ?? "?"} to ${weather.max?.toFixed(1) ?? "?"} C${gustMph == null ? "" : ` · ${gustMph.toFixed(0)} mph gusts`}`
-    : "Showing saved data if available";
+  if ($("heroForecastRain")) {
+    $("heroForecastRain").textContent = weather ? `${weather.rain.toFixed(1)} mm rain` : "Forecast unavailable";
+  }
+  if ($("heroForecastDetail")) {
+    $("heroForecastDetail").textContent = weather
+      ? `${weather.min?.toFixed(1) ?? "?"} to ${weather.max?.toFixed(1) ?? "?"} C${gustMph == null ? "" : ` · ${gustMph.toFixed(0)} mph gusts`}`
+      : "Showing saved data if available";
+  }
   $("heroTides").innerHTML = tides.map((t) => `
     <div>
       <small>${t.type}</small>
