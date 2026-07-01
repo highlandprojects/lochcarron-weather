@@ -9,52 +9,59 @@
   const isAndroid = () => /android/.test(window.navigator.userAgent.toLowerCase());
   const isStandalone = () => window.matchMedia("(display-mode: standalone)").matches || window.navigator.standalone === true;
 
-  function installCopy() {
-    if (isStandalone()) {
-      return "Installed on this device.";
-    }
-    if (isIOS()) {
-      return "Tap the Share button, then choose Add to Home Screen.";
-    }
-    if (deferredInstallPrompt) {
-      return "Install the planner for quick access when signal is poor.";
-    }
-    if (isAndroid()) {
-      return "Open in Chrome and use the browser install option if shown.";
-    }
-    return "Open this site on your phone to add it to your Home Screen.";
+  function canOfferInstall() {
+    return !isStandalone() && (isIOS() || Boolean(deferredInstallPrompt));
   }
 
-  function renderInstallPanel() {
-    const help = document.getElementById("installHelp");
-    const button = document.getElementById("installButton");
-    if (!help || !button) return;
+  function renderInstallButton() {
+    const button = document.getElementById("installFab");
+    if (!button) return;
+    button.hidden = !canOfferInstall();
+  }
 
-    help.textContent = installCopy();
-    button.hidden = isStandalone() || isIOS() || !deferredInstallPrompt;
+  function setIOSDialog(open) {
+    const dialog = document.getElementById("iosInstallDialog");
+    if (!dialog) return;
+    dialog.hidden = !open;
   }
 
   window.addEventListener("beforeinstallprompt", (event) => {
     event.preventDefault();
     deferredInstallPrompt = event;
-    renderInstallPanel();
+    renderInstallButton();
   });
 
   window.addEventListener("appinstalled", () => {
     deferredInstallPrompt = null;
-    renderInstallPanel();
+    renderInstallButton();
+    setIOSDialog(false);
   });
 
   window.addEventListener("DOMContentLoaded", () => {
-    renderInstallPanel();
+    renderInstallButton();
 
-    document.getElementById("installButton")?.addEventListener("click", async () => {
+    document.getElementById("installFab")?.addEventListener("click", async () => {
+      if (isIOS()) {
+        setIOSDialog(true);
+        return;
+      }
+
       if (!deferredInstallPrompt) return;
       const promptEvent = deferredInstallPrompt;
       deferredInstallPrompt = null;
       promptEvent.prompt();
       await promptEvent.userChoice.catch(() => null);
-      renderInstallPanel();
+      renderInstallButton();
+    });
+
+    document.getElementById("iosInstallDialog")?.addEventListener("click", (event) => {
+      if (event.target.id === "iosInstallDialog" || event.target.closest("[data-install-close]")) {
+        setIOSDialog(false);
+      }
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape") setIOSDialog(false);
     });
   });
 

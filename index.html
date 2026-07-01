@@ -41,7 +41,7 @@
     <link rel="icon" href="favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="64x64" href="assets/icons/favicon-64.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
-    <link rel="stylesheet" href="styles.css?v=20260701-18">
+    <link rel="stylesheet" href="styles.css?v=20260701-19">
   </head>
   <body>
     <div id="dataNotice" class="statusnotice" hidden></div>
@@ -305,13 +305,6 @@
 
     <footer>
       <div class="footer__tools">
-        <section id="installPanel" class="install-panel" aria-label="Install on your phone">
-          <div>
-            <span>Install on your phone</span>
-            <p id="installHelp">Open this site on your phone to add it to your Home Screen.</p>
-          </div>
-          <button id="installButton" type="button" hidden>Install</button>
-        </section>
         <div class="theme-toggle" role="group" aria-label="Colour mode">
           <button type="button" data-theme-choice="auto" aria-pressed="true">Auto</button>
           <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
@@ -320,6 +313,20 @@
       </div>
       <p>Weather data: Open-Meteo forecast, archive fallback, and Open-Meteo Marine for Lochcarron coordinates. Marine data is a rough indicator only, not for navigation. Photo: Wikimedia Commons, "Lochcarron - panoramio.jpg".</p>
     </footer>
+
+    <button id="installFab" class="install-fab" type="button" hidden>Install App</button>
+    <div id="iosInstallDialog" class="install-dialog" role="dialog" aria-modal="true" aria-labelledby="installDialogTitle" hidden>
+      <div class="install-dialog__panel">
+        <button class="install-dialog__close" type="button" data-install-close aria-label="Close install instructions">×</button>
+        <span>Install App</span>
+        <h2 id="installDialogTitle">Add Lochcarron Weather to your Home Screen</h2>
+        <ol>
+          <li>Tap Share.</li>
+          <li>Tap Add to Home Screen.</li>
+        </ol>
+        <button class="install-dialog__confirm" type="button" data-install-close>Got it</button>
+      </div>
+    </div>
 
     <script src="data/weather-data.js"></script>
     <script src="scripts/app-state.js?v=20260701-9"></script>
@@ -330,6 +337,6 @@
     <script src="scripts/rain-chart.js?v=20260701-9"></script>
     <script src="scripts/date-facts.js?v=20260701-9"></script>
     <script src="scripts/app-boot.js?v=20260701-10"></script>
-    <script src="scripts/pwa.js?v=20260701-2"></script>
+    <script src="scripts/pwa.js?v=20260701-3"></script>
   </body>
 </html>
