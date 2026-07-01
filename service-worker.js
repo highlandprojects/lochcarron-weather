@@ -1,4 +1,4 @@
-const CACHE_NAME = "lochcarron-weather-v20260701-1";
+const CACHE_NAME = "lochcarron-weather-v20260701-2";
 
 const APP_SHELL = [
   "./",
@@ -20,6 +20,7 @@ const APP_SHELL = [
   "./scripts/pwa.js?v=20260701-1",
   "./assets/lochcarron-hero-real.jpg",
   "./assets/lochcarron-thumb-real.jpg",
+  "./assets/social-card.png",
   "./assets/daylight-wide.png",
   "./assets/moon-phases-sprite-centered.png",
   "./assets/icons/favicon-64.png",
