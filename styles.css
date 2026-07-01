@@ -797,6 +797,18 @@ h2 {
   position: relative;
 }
 
+.planner-section {
+  min-width: 0;
+}
+
+.planner-section + .planner-section,
+.hero-hourly-tides {
+  margin-top: 22px;
+  padding-top: 20px;
+  border-top: 1px solid var(--line);
+}
+
+.planner-section__head,
 .hero-hourly__head {
   display: flex;
   align-items: baseline;
@@ -805,15 +817,23 @@ h2 {
   margin-bottom: 8px;
 }
 
+.planner-section__head span,
 .hero-hourly__head span {
   margin: 0;
+  color: var(--muted);
   font-weight: 900;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
 }
 
+.planner-section__head strong,
 .hero-hourly__head strong {
+  color: var(--ink);
   font-size: clamp(1.1rem, 2vw, 1.6rem);
 }
 
+.planner-tabs,
 .hourlytabs {
   display: flex;
   gap: 10px;
@@ -982,12 +1002,6 @@ h2 {
   color: var(--muted);
   font-weight: 650;
   text-align: center;
-}
-
-.hero-hourly-tides {
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 1px solid var(--line);
 }
 
 .hero-hourly-tides__head {

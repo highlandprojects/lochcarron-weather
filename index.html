@@ -18,7 +18,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260701-8">
+    <link rel="stylesheet" href="styles.css?v=20260701-9">
   </head>
   <body>
     <div id="dataNotice" class="statusnotice" hidden></div>
@@ -168,12 +168,14 @@
             </div>
           </article>
           <article class="hero-card hero-hourly">
-            <div class="hero-hourly__head">
-              <span>Next 24 hours</span>
-              <strong id="hourlySummary">Loading</strong>
-            </div>
-            <div id="hourlyTabs" class="hourlytabs" aria-label="Choose a forecast day"></div>
-            <div id="hourlyChart" class="hourlychart" aria-label="Hourly temperature and rain forecast"></div>
+            <section class="planner-section weather-planner" aria-label="Weather Planner">
+              <div class="planner-section__head">
+                <span>Weather Planner</span>
+                <strong id="hourlySummary">Loading</strong>
+              </div>
+              <div id="hourlyTabs" class="hourlytabs planner-tabs" aria-label="Choose a weather forecast day"></div>
+              <div id="hourlyChart" class="hourlychart" aria-label="Hourly temperature and rain forecast"></div>
+            </section>
             <div id="heroHourlyTides" class="hero-hourly-tides" aria-label="Tides for selected weather day"></div>
             <div id="hourlyTooltip" class="hourlytooltip" hidden></div>
           </article>
@@ -362,13 +364,13 @@
     </footer>
 
     <script src="data/weather-data.js"></script>
-    <script src="scripts/app-state.js?v=20260701-4"></script>
-    <script src="scripts/theme-thoughts.js?v=20260701-4"></script>
-    <script src="scripts/data-loading.js?v=20260701-4"></script>
-    <script src="scripts/live-weather.js?v=20260701-4"></script>
-    <script src="scripts/planner-tides.js?v=20260701-4"></script>
-    <script src="scripts/rain-chart.js?v=20260701-4"></script>
-    <script src="scripts/date-facts.js?v=20260701-4"></script>
-    <script src="scripts/app-boot.js?v=20260701-4"></script>
+    <script src="scripts/app-state.js?v=20260701-9"></script>
+    <script src="scripts/theme-thoughts.js?v=20260701-9"></script>
+    <script src="scripts/data-loading.js?v=20260701-9"></script>
+    <script src="scripts/live-weather.js?v=20260701-9"></script>
+    <script src="scripts/planner-tides.js?v=20260701-9"></script>
+    <script src="scripts/rain-chart.js?v=20260701-9"></script>
+    <script src="scripts/date-facts.js?v=20260701-9"></script>
+    <script src="scripts/app-boot.js?v=20260701-9"></script>
   </body>
 </html>

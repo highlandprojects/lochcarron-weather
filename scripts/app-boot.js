@@ -80,6 +80,12 @@ $("hourlyTabs").addEventListener("click", (event) => {
   DATA.hourlyDate = button.dataset.hourlyDate;
   updateHeroHourly();
 });
+$("heroHourlyTides").addEventListener("click", (event) => {
+  const button = event.target.closest("[data-hourly-date]");
+  if (!button) return;
+  DATA.hourlyDate = button.dataset.hourlyDate;
+  updateHeroHourly();
+});
 $("tideTabs")?.addEventListener("click", (event) => {
   const button = event.target.closest("[data-tide-date]");
   if (!button) return;
