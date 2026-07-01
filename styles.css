@@ -1101,11 +1101,18 @@ h2 {
 
 .hero-hourly-tides__chart {
   max-height: 270px;
-  overflow: hidden auto;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 6px 0 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
 }
 
 .hero-hourly-tides__chart .tideplanner-svg {
+  display: block;
   min-width: 720px;
+  width: 100%;
+  height: auto;
 }
 
 .hourlytooltip {

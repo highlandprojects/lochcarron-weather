@@ -1,11 +1,11 @@
-const CACHE_NAME = "lochcarron-weather-v1.0.3";
+const CACHE_NAME = "lochcarron-weather-v1.0.4";
 
 const APP_SHELL = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./favicon.ico",
-  "./styles.css?v=20260701-14",
+  "./styles.css?v=20260701-15",
   "./data/weather-data.js",
   "./data/forecast.json",
   "./data/weather-3y.json",
