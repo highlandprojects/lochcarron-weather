@@ -945,11 +945,16 @@ h2 {
   color: var(--ink);
 }
 
+.hero-card.hero-marine p.warningline,
+.hero-card.hero-marine .liveupdated {
+  font-size: 0.78rem !important;
+  font-weight: 800;
+  line-height: 1.35;
+  letter-spacing: 0.04em;
+}
+
 .warningline {
   color: var(--sea-dark);
-  font-size: 0.78rem;
-  font-weight: 850;
-  letter-spacing: 0.04em;
 }
 
 .hero-small {
