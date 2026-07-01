@@ -3,6 +3,10 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#0c3e48">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-title" content="Lochcarron">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <title>Lochcarron Weather Planner</title>
     <script>
       (() => {
@@ -18,6 +22,9 @@
         }
       })();
     </script>
+    <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" type="image/png" sizes="64x64" href="assets/icons/favicon-64.png">
+    <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
     <link rel="stylesheet" href="styles.css?v=20260701-13">
   </head>
   <body>
@@ -380,5 +387,6 @@
     <script src="scripts/rain-chart.js?v=20260701-9"></script>
     <script src="scripts/date-facts.js?v=20260701-9"></script>
     <script src="scripts/app-boot.js?v=20260701-10"></script>
+    <script src="scripts/pwa.js?v=20260701-1"></script>
   </body>
 </html>
