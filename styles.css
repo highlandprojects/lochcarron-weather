@@ -2145,6 +2145,27 @@ footer {
   font-size: 0.92rem;
 }
 
+.footer__tools {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 14px;
+}
+
+footer .theme-toggle {
+  border-color: var(--line);
+  background: var(--panel-glass);
+  box-shadow: 0 10px 28px rgba(7, 22, 25, 0.08);
+}
+
+footer .theme-toggle button {
+  color: var(--muted);
+}
+
+footer .theme-toggle button.is-active {
+  background: var(--ink);
+  color: var(--panel);
+}
+
 .hero-card,
 .dailythought,
 .panel,

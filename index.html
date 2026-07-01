@@ -51,11 +51,6 @@
       <nav class="topbar" aria-label="Primary">
         <strong><span>Lochcarron</span> Weather Planner.</strong>
         <span id="lochcarronClock" class="localclock" aria-label="Current date and time in Lochcarron">Lochcarron time</span>
-        <div class="theme-toggle" role="group" aria-label="Colour mode">
-          <button type="button" data-theme-choice="auto" aria-pressed="true">Auto</button>
-          <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
-          <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
-        </div>
       </nav>
       <section class="hero__content">
         <div class="hero-planner-intro">
@@ -391,6 +386,13 @@
     </main>
 
     <footer>
+      <div class="footer__tools">
+        <div class="theme-toggle" role="group" aria-label="Colour mode">
+          <button type="button" data-theme-choice="auto" aria-pressed="true">Auto</button>
+          <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
+          <button type="button" data-theme-choice="dark" aria-pressed="false">Dark</button>
+        </div>
+      </div>
       <p>Weather data: Open-Meteo forecast, archive fallback, and Open-Meteo Marine for Lochcarron coordinates. Marine data is a rough indicator only, not for navigation. Photo: Wikimedia Commons, "Lochcarron - panoramio.jpg".</p>
     </footer>
 
