@@ -226,14 +226,10 @@ function renderHeroHourlyTides(dateString = DATA.hourlyDate || todayISO()) {
   if (!$("heroHourlyTides")) return;
   const tides = tideWindows(dateString);
   const weather = plannerWeatherForDate(dateString);
-  const tabs = hourlyDayTabs();
   $("heroHourlyTides").innerHTML = `
     <div class="planner-section__head">
       <span>Tide Planner</span>
       <strong>${dateString === todayISO() ? "Today" : dayName(dateString)}</strong>
-    </div>
-    <div id="heroTideTabs" class="hourlytabs planner-tabs" aria-label="Choose a tide planning day">
-      ${tabs.map(hourlyTabMarkup).join("")}
     </div>
     <div class="hero-hourly-tides__weather planner-hourly-cues" aria-label="Hourly weather cues for tide planning">
       ${tidePlannerWeatherMarkup(dateString, weather)}
