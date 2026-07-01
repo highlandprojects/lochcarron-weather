@@ -536,13 +536,19 @@ function updateHeroToday() {
   const pollen = pollenEstimate(heroDate);
   const aurora = auroraEstimate(heroDate);
 
-  $("heroWeatherIcon").textContent = weather ? liveWeatherIcon(weather.weatherCode, weather.isDay) : "?";
+  $("heroWeatherIcon").dataset.weather = weather ? liveWeatherScene(weather.weatherCode, weather.isDay) : "cloud";
   $("heroWeather").textContent = temp == null ? "Unavailable" : `${Math.round(temp)}°C`;
   $("heroCondition").textContent = weather ? weatherConditionLabel(weather.weatherCode) : "Live weather unavailable";
   $("heroFeelsLike").textContent = apparentTemp == null ? "Feels like unavailable" : `Feels like ${Math.round(apparentTemp)}°C`;
-  $("heroWind").textContent = windMph == null ? "Wind n/a" : `${windMph.toFixed(0)} mph wind`;
-  $("heroHumidity").textContent = weather?.humidity == null ? "Humidity n/a" : `${Math.round(weather.humidity)}% humidity`;
-  $("heroWeatherUpdated").textContent = liveUpdateText(DATA.weatherUpdatedAt, DATA.weatherSource);
+  if ($("heroWind")) {
+    $("heroWind").textContent = windMph == null ? "Wind n/a" : `${windMph.toFixed(0)} mph wind`;
+  }
+  if ($("heroHumidity")) {
+    $("heroHumidity").textContent = weather?.humidity == null ? "Humidity n/a" : `${Math.round(weather.humidity)}% humidity`;
+  }
+  if ($("heroWeatherUpdated")) {
+    $("heroWeatherUpdated").textContent = liveUpdateText(DATA.weatherUpdatedAt, DATA.weatherSource);
+  }
   $("heroPollenLevel").textContent = pollen.level;
   $("heroPollenType").textContent = pollen.type;
   $("heroPollenDetail").textContent = pollen.detail;
@@ -882,6 +888,18 @@ function liveWeatherIcon(code, isDay) {
     if (code >= 95) return "⛈️";
   }
   return weatherCodeIcon(code);
+}
+
+function liveWeatherScene(code, isDay) {
+  if (isDay === false && (code === 0 || code === 1)) return "night";
+  if (code === 0 || code === 1) return "clear";
+  if (code === 2) return "partly";
+  if (code === 3) return "cloud";
+  if ([45, 48].includes(code)) return "fog";
+  if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return "rain";
+  if ((code >= 71 && code <= 77) || (code >= 85 && code <= 86)) return "snow";
+  if (code >= 95) return "storm";
+  return "cloud";
 }
 
 function tideWeatherIcon(code, isDay) {
