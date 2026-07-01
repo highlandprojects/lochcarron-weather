@@ -340,16 +340,15 @@ h2 {
 
 .hero-weather {
   order: 1;
+  grid-column: 1 / -1;
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr);
-  align-content: stretch;
-  justify-items: stretch;
+  gap: 14px;
 }
 
-.hero-weather__split {
+.live-now-dashboard {
   display: grid;
-  grid-template-rows: minmax(0, 1fr) minmax(0, 0.82fr);
-  gap: 12px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
   min-height: 0;
 }
 
@@ -363,7 +362,8 @@ h2 {
   text-align: center;
 }
 
-.hero-weather__section small {
+.hero-weather__section small,
+.live-now-card small {
   margin-bottom: 8px;
   color: var(--muted);
   font-size: 0.76rem;
@@ -374,31 +374,247 @@ h2 {
 
 .hero-weather__main {
   display: grid;
-  grid-template-columns: minmax(72px, auto) minmax(100px, 1fr);
+  grid-template-columns: minmax(72px, auto) minmax(130px, 1fr);
   align-items: center;
   justify-content: center;
-  gap: clamp(14px, 3vw, 34px);
+  gap: clamp(12px, 2vw, 22px);
+  min-height: 210px;
 }
 
 .hero-weather .forecasticon {
-  width: clamp(72px, 8vw, 96px);
-  height: clamp(72px, 8vw, 96px);
-  font-size: clamp(2.5rem, 4vw, 3.7rem);
+  width: clamp(78px, 8vw, 110px);
+  height: clamp(78px, 8vw, 110px);
+  font-size: clamp(2.5rem, 4vw, 3.6rem);
 }
 
 .hero-weather strong {
-  font-size: clamp(2.3rem, 5.2vw, 3.8rem);
+  font-size: clamp(2.8rem, 5vw, 4.3rem);
 }
 
 .hero-weather p {
   justify-self: center;
   text-align: center;
-  font-size: clamp(0.98rem, 1.8vw, 1.2rem);
+  font-size: clamp(1rem, 1.8vw, 1.35rem);
   font-weight: 650;
 }
 
-.hero-weather__forecast strong {
-  font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+.live-now-meta {
+  display: flex;
+  justify-content: center;
+  gap: 18px;
+  flex-wrap: wrap;
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: clamp(0.98rem, 1.6vw, 1.18rem);
+  font-weight: 750;
+}
+
+.live-now-meta span + span::before {
+  content: "·";
+  margin-right: 18px;
+  color: var(--muted);
+}
+
+.live-now-card {
+  display: grid;
+  align-content: center;
+  justify-items: center;
+  min-width: 0;
+  padding: clamp(18px, 2vw, 26px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: color-mix(in srgb, var(--panel) 76%, transparent);
+  text-align: center;
+}
+
+.live-now-card span {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  justify-self: start;
+  margin-bottom: 22px;
+}
+
+.live-now-card__icon {
+  display: grid;
+  place-items: center;
+  width: clamp(72px, 8vw, 104px);
+  height: clamp(72px, 8vw, 104px);
+  margin-bottom: 18px;
+  border-radius: 999px;
+  background: var(--soft-chip);
+  color: var(--sea-dark);
+  font-size: clamp(2.1rem, 4vw, 3.2rem);
+}
+
+.live-now-card__icon svg {
+  width: 62%;
+  height: 62%;
+  overflow: visible;
+}
+
+.live-now-card__icon svg path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 4.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pollen-card .live-now-card__icon {
+  color: var(--moss);
+}
+
+.live-card-heading-icon {
+  flex: 0 0 auto;
+  width: 27px;
+  height: 27px;
+  padding: 5px;
+  border-radius: 999px;
+  background: var(--soft-chip);
+}
+
+.live-card-heading-icon path,
+.live-card-heading-icon circle {
+  fill: none;
+  stroke-width: 2.3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.pollen-heading-icon {
+  color: var(--moss);
+}
+
+.pollen-heading-icon path,
+.pollen-heading-icon circle {
+  stroke: currentColor;
+}
+
+.pollen-card .pollen-stem {
+  fill: none;
+  stroke: var(--sea-dark);
+  stroke-width: 4.5;
+  stroke-linecap: round;
+}
+
+.pollen-card .pollen-leaf {
+  fill: #6fb77a;
+  stroke: #2f8f63;
+  stroke-width: 2.4;
+  stroke-linejoin: round;
+}
+
+.pollen-card .pollen-leaf--right {
+  fill: #92c86c;
+}
+
+.pollen-centre {
+  fill: #f1cf55;
+  stroke: #d09a25;
+  stroke-width: 2.4;
+}
+
+.pollen-dot {
+  fill: #d09a25;
+}
+
+.aurora-card .live-now-card__icon {
+  background: transparent;
+}
+
+.aurora-card .live-now-card__icon svg {
+  width: 92%;
+  height: 92%;
+}
+
+.aurora-heading-icon {
+  background: color-mix(in srgb, #7f55bf 16%, var(--soft-chip));
+  color: #7f55bf;
+}
+
+.aurora-heading-ray {
+  stroke: currentColor;
+}
+
+.aurora-sky {
+  fill: url("#auroraSky");
+}
+
+.aurora-card .aurora-curtain {
+  stroke: none;
+}
+
+.aurora-card .aurora-curtain--purple {
+  fill: url("#auroraCurtainPurple");
+}
+
+.aurora-card .aurora-curtain--green {
+  fill: url("#auroraCurtainGreen");
+}
+
+.aurora-card .aurora-curtain--soft {
+  opacity: 0.86;
+}
+
+.aurora-card .aurora-glow {
+  fill: none;
+  stroke-linecap: round;
+  stroke-width: 8;
+  opacity: 0.72;
+}
+
+.aurora-card .aurora-glow--green {
+  stroke: #57e0c0;
+}
+
+.aurora-card .aurora-glow--purple {
+  stroke: #a86dff;
+}
+
+.aurora-star {
+  fill: #fff8c7;
+}
+
+.aurora-mountains {
+  fill: #101b3c;
+  stroke: none;
+}
+
+.live-now-card strong {
+  font-size: clamp(1.8rem, 3.4vw, 2.6rem);
+}
+
+.pollen-card strong {
+  color: var(--moss);
+}
+
+.aurora-card strong {
+  color: #7f55bf;
+}
+
+.live-now-card i {
+  position: relative;
+  display: block;
+  width: min(230px, 100%);
+  height: 8px;
+  margin-top: 22px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #35a85a 0 24%, #b8d56b 24% 42%, #ffd45c 42% 62%, #ff9f43 62% 80%, #e33c3c 80% 100%);
+}
+
+.live-now-card i::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: clamp(0px, var(--meter, 8%), calc(100% - 18px));
+  width: 18px;
+  height: 18px;
+  border: 3px solid #4aae70;
+  border-radius: 999px;
+  background: var(--panel);
+  transform: translateY(-50%);
 }
 
 .hero-tides {
@@ -1945,6 +2161,10 @@ html[data-theme="dark"] .moonphase {
     padding-top: 146px;
   }
 
+  .live-now-dashboard {
+    grid-template-columns: 1fr;
+  }
+
   .hero__actions,
   .outlook__grid,
   .toolgrid,
@@ -1974,6 +2194,16 @@ html[data-theme="dark"] .moonphase {
 @media (max-width: 520px) {
   .hero__today {
     grid-template-columns: 1fr;
+  }
+
+  .hero-weather__main {
+    grid-template-columns: 1fr;
+    justify-items: center;
+    text-align: center;
+  }
+
+  .live-now-meta span + span::before {
+    content: none;
   }
 
   .dailythought {

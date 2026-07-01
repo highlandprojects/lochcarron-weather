@@ -26,9 +26,9 @@ const fmt = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", y
 const dayFmt = new Intl.DateTimeFormat("en-GB", { weekday: "short", day: "numeric", month: "short" });
 const monthFmt = new Intl.DateTimeFormat("en-GB", { month: "long" });
 const shortMonthFmt = new Intl.DateTimeFormat("en-GB", { month: "short" });
-const WEATHER_API_URL = "https://api.open-meteo.com/v1/forecast?latitude=57.405&longitude=-5.503&current=temperature_2m,wind_speed_10m,weather_code,is_day&hourly=temperature_2m,precipitation,precipitation_probability,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max,sunrise,sunset&timezone=Europe/London&forecast_days=14";
+const WEATHER_API_URL = "https://api.open-meteo.com/v1/forecast?latitude=57.405&longitude=-5.503&current=temperature_2m,apparent_temperature,relative_humidity_2m,wind_speed_10m,weather_code,is_day&hourly=temperature_2m,precipitation,precipitation_probability,weather_code,wind_speed_10m&daily=weather_code,temperature_2m_max,temperature_2m_min,precipitation_sum,wind_speed_10m_max,wind_gusts_10m_max,sunrise,sunset&timezone=Europe/London&forecast_days=14";
 const MARINE_API_URL = "https://marine-api.open-meteo.com/v1/marine?latitude=57.405&longitude=-5.503&hourly=sea_level_height_msl,wave_height,wave_direction,wave_period&timezone=Europe/London";
-const WEATHER_CACHE_KEY = "lochcarron.openMeteo.weather.v6";
+const WEATHER_CACHE_KEY = "lochcarron.openMeteo.weather.v7";
 const MARINE_CACHE_KEY = "lochcarron.openMeteo.marine.v1";
 const RAIN_ARCHIVE_CACHE_PREFIX = "lochcarron.openMeteo.rainArchive.v1.";
 const THEME_CACHE_KEY = "lochcarron.themeMode";
@@ -309,6 +309,8 @@ function parseCurrentWeather(json) {
   return {
     date: (current.time || todayISO()).slice(0, 10),
     temp: current.temperature_2m == null ? null : Number(current.temperature_2m),
+    apparentTemp: current.apparent_temperature == null ? null : Number(current.apparent_temperature),
+    humidity: current.relative_humidity_2m == null ? null : Number(current.relative_humidity_2m),
     wind: current.wind_speed_10m == null ? null : Number(current.wind_speed_10m),
     weatherCode: current.weather_code == null ? null : Number(current.weather_code),
     isDay: current.is_day == null ? null : Number(current.is_day) === 1
@@ -514,6 +516,8 @@ function withCurrentWeather(day) {
   return {
     ...day,
     currentTemp: DATA.current.temp,
+    apparentTemp: DATA.current.apparentTemp,
+    humidity: DATA.current.humidity,
     wind: DATA.current.wind ?? day.wind,
     weatherCode: DATA.current.weatherCode,
     isDay: DATA.current.isDay
@@ -528,13 +532,24 @@ function updateHeroToday() {
   const windMph = weather ? kmhToMph(weather.wind) : null;
   const gustMph = weather ? kmhToMph(weather.gust) : null;
   const temp = weather?.currentTemp ?? weather?.max;
+  const apparentTemp = weather?.apparentTemp ?? temp;
+  const pollen = pollenEstimate(heroDate);
+  const aurora = auroraEstimate(heroDate);
 
   $("heroWeatherIcon").textContent = weather ? liveWeatherIcon(weather.weatherCode, weather.isDay) : "?";
-  $("heroWeather").textContent = temp == null ? "Unavailable" : `${Math.round(temp)} C`;
-  $("heroLiveDetail").textContent = weather
-    ? `${weatherConditionLabel(weather.weatherCode)} · ${windMph == null ? "Wind n/a" : `${windMph.toFixed(0)} mph wind`}`
-    : "Live weather unavailable";
+  $("heroWeather").textContent = temp == null ? "Unavailable" : `${Math.round(temp)}°C`;
+  $("heroCondition").textContent = weather ? weatherConditionLabel(weather.weatherCode) : "Live weather unavailable";
+  $("heroFeelsLike").textContent = apparentTemp == null ? "Feels like unavailable" : `Feels like ${Math.round(apparentTemp)}°C`;
+  $("heroWind").textContent = windMph == null ? "Wind n/a" : `${windMph.toFixed(0)} mph wind`;
+  $("heroHumidity").textContent = weather?.humidity == null ? "Humidity n/a" : `${Math.round(weather.humidity)}% humidity`;
   $("heroWeatherUpdated").textContent = liveUpdateText(DATA.weatherUpdatedAt, DATA.weatherSource);
+  $("heroPollenLevel").textContent = pollen.level;
+  $("heroPollenType").textContent = pollen.type;
+  $("heroPollenDetail").textContent = pollen.detail;
+  $("heroPollenMeter").style.setProperty("--meter", `${pollen.score}%`);
+  $("heroAuroraLevel").textContent = aurora.level;
+  $("heroAuroraDetail").textContent = aurora.detail;
+  $("heroAuroraMeter").style.setProperty("--meter", `${aurora.score}%`);
   if ($("heroForecastRain")) {
     $("heroForecastRain").textContent = weather ? `${weather.rain.toFixed(1)} mm rain` : "Forecast unavailable";
   }
@@ -559,6 +574,48 @@ function updateHeroToday() {
   $("heroMoon").textContent = phase;
   $("heroMoonText").textContent = moonPhaseDescription(phase);
   $("heroMoonIcon").className = `moonphase ${moonPhaseClass(phase)}`;
+}
+
+function pollenEstimate(dateString) {
+  const month = new Date(`${dateString}T12:00:00`).getMonth();
+  if (month >= 4 && month <= 6) {
+    return {
+      level: "Moderate",
+      type: "Grass pollen",
+      detail: "Main Highland pollen season",
+      score: 38
+    };
+  }
+  if (month === 3 || month === 7) {
+    return {
+      level: "Low",
+      type: month === 3 ? "Tree pollen" : "Grass pollen",
+      detail: "Lower local seasonal levels",
+      score: 18
+    };
+  }
+  return {
+    level: "Low",
+    type: "Pollen season quiet",
+    detail: "Very low local seasonal levels",
+    score: 8
+  };
+}
+
+function auroraEstimate(dateString) {
+  const month = new Date(`${dateString}T12:00:00`).getMonth();
+  if (month >= 9 || month <= 2) {
+    return {
+      level: "Low",
+      detail: "Possible on clear dark nights",
+      score: 18
+    };
+  }
+  return {
+    level: "Very low",
+    detail: "Short Highland summer nights",
+    score: 6
+  };
 }
 
 function updateHeroHourly() {
