@@ -234,13 +234,18 @@ a {
 
 .dailythought {
   position: relative;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  align-items: center;
+  gap: clamp(14px, 2vw, 22px);
   margin: 0 0 16px;
-  padding: clamp(14px, 2vw, 20px) clamp(18px, 2.4vw, 26px);
+  padding: clamp(16px, 2vw, 22px) clamp(18px, 2.4vw, 28px);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.34);
   border-radius: 8px;
   background:
-    linear-gradient(135deg, rgba(255, 255, 255, 0.94), rgba(255, 247, 224, 0.9)),
+    radial-gradient(circle at 8% 30%, rgba(227, 171, 59, 0.18), transparent 28%),
+    linear-gradient(135deg, rgba(255, 255, 255, 0.95), rgba(255, 248, 229, 0.92)),
     var(--panel);
   box-shadow: 0 18px 50px rgba(7, 22, 25, 0.2);
   color: var(--ink);
@@ -254,10 +259,60 @@ a {
   background: linear-gradient(180deg, var(--sun), var(--sea));
 }
 
-.dailythought span {
-  display: block;
-  margin-bottom: 8px;
+.dailythought__mark {
+  display: grid;
+  place-items: center;
+  width: clamp(46px, 5vw, 58px);
+  height: clamp(46px, 5vw, 58px);
+  border-radius: 999px;
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.74), rgba(232, 241, 237, 0.9)),
+    var(--soft-chip);
   color: var(--sea-dark);
+  box-shadow: inset 0 0 0 1px rgba(15, 63, 74, 0.08);
+}
+
+.dailythought__mark svg {
+  width: 58%;
+  height: 58%;
+}
+
+.dailythought__mark path,
+.dailythought__mark circle {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.4;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.dailythought__mark .thought-sun {
+  fill: var(--sun);
+  stroke: none;
+}
+
+.dailythought__mark .thought-hill {
+  stroke: var(--sea-dark);
+}
+
+.dailythought__mark .thought-water {
+  stroke: var(--sea);
+}
+
+.dailythought__copy {
+  position: relative;
+  z-index: 1;
+}
+
+.dailythought span {
+  display: inline-flex;
+  align-items: center;
+  min-height: 24px;
+  margin-bottom: 7px;
+  padding: 0 10px;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--sun) 18%, transparent);
+  color: color-mix(in srgb, var(--sea-dark) 88%, var(--sun));
   font-size: 0.8rem;
   font-weight: 900;
   letter-spacing: 0.12em;
@@ -270,7 +325,7 @@ a {
   color: var(--ink);
   font-size: clamp(1.05rem, 1.9vw, 1.45rem);
   font-weight: 850;
-  line-height: 1.18;
+  line-height: 1.22;
 }
 
 .kicker {
@@ -2220,6 +2275,7 @@ html[data-theme="dark"] .button--primary {
 
 html[data-theme="dark"] .dailythought {
   background:
+    radial-gradient(circle at 8% 30%, rgba(240, 186, 71, 0.14), transparent 28%),
     linear-gradient(135deg, rgba(25, 50, 53, 0.96), rgba(51, 44, 25, 0.88)),
     var(--panel);
   border-color: rgba(205, 228, 220, 0.22);
@@ -2227,6 +2283,13 @@ html[data-theme="dark"] .dailythought {
 
 html[data-theme="dark"] .dailythought span {
   color: #ffd077;
+  background: rgba(240, 186, 71, 0.12);
+}
+
+html[data-theme="dark"] .dailythought__mark {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.08), rgba(30, 58, 61, 0.84)),
+    var(--soft-chip);
 }
 
 html[data-theme="dark"] .button--ghost {
@@ -2368,8 +2431,15 @@ html[data-theme="dark"] .moonphase {
   }
 
   .dailythought {
+    grid-template-columns: auto minmax(0, 1fr);
+    gap: 12px;
     margin-bottom: 14px;
     padding: 16px 16px 16px 20px;
+  }
+
+  .dailythought__mark {
+    width: 42px;
+    height: 42px;
   }
 
   .dailythought span {

@@ -18,7 +18,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260701-9">
+    <link rel="stylesheet" href="styles.css?v=20260701-12">
   </head>
   <body>
     <div id="dataNotice" class="statusnotice" hidden></div>
@@ -40,7 +40,15 @@
           <p>Live conditions, forecast rain and tide timing in one place for visitors choosing when to walk, paddle, photograph or simply arrive well prepared.</p>
         </div>
         <article id="dailyThought" class="dailythought" aria-label="Highland Thought for Today">
-          <div>
+          <div class="dailythought__mark" aria-hidden="true">
+            <svg viewBox="0 0 32 32" focusable="false">
+              <circle class="thought-sun" cx="16" cy="13" r="4"></circle>
+              <path class="thought-ray" d="M16 5v3M9 8l2 2M23 8l-2 2"></path>
+              <path class="thought-hill" d="M6 22c4-5 7-7 10-7s6 2 10 7"></path>
+              <path class="thought-water" d="M7 25c3 1 5 1 8 0s6-1 10 0"></path>
+            </svg>
+          </div>
+          <div class="dailythought__copy">
             <span id="dailyThoughtCategory">Daily Thought</span>
             <p id="dailyThoughtText">Loading today's thought...</p>
           </div>
