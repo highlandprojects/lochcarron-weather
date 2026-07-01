@@ -1929,8 +1929,57 @@ footer {
 
 .footer__tools {
   display: flex;
-  justify-content: flex-end;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  flex-wrap: wrap;
   margin-bottom: 14px;
+}
+
+.install-panel {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 560px;
+  min-height: 48px;
+  padding: 8px 10px 8px 14px;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  background: var(--panel-glass);
+  box-shadow: 0 10px 28px rgba(7, 22, 25, 0.08);
+}
+
+.install-panel span {
+  display: block;
+  color: var(--ink);
+  font-size: 0.78rem;
+  font-weight: 850;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.install-panel p {
+  margin: 2px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+  line-height: 1.25;
+}
+
+.install-panel button {
+  flex: 0 0 auto;
+  min-height: 34px;
+  padding: 0 14px;
+  border-radius: 999px;
+  background: var(--ink);
+  color: var(--panel);
+  font-size: 0.78rem;
+  font-weight: 850;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.install-panel button[hidden] {
+  display: none;
 }
 
 footer .theme-toggle {
@@ -1946,6 +1995,18 @@ footer .theme-toggle button {
 footer .theme-toggle button.is-active {
   background: var(--ink);
   color: var(--panel);
+}
+
+@media (max-width: 680px) {
+  .footer__tools {
+    align-items: stretch;
+    justify-content: flex-start;
+  }
+
+  .install-panel {
+    width: 100%;
+    border-radius: 8px;
+  }
 }
 
 .hero-card,

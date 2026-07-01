@@ -41,7 +41,7 @@
     <link rel="icon" href="favicon.ico" sizes="any">
     <link rel="icon" type="image/png" sizes="64x64" href="assets/icons/favicon-64.png">
     <link rel="apple-touch-icon" sizes="180x180" href="assets/icons/apple-touch-icon.png">
-    <link rel="stylesheet" href="styles.css?v=20260701-17">
+    <link rel="stylesheet" href="styles.css?v=20260701-18">
   </head>
   <body>
     <div id="dataNotice" class="statusnotice" hidden></div>
@@ -54,7 +54,7 @@
       </nav>
       <section class="hero__content">
         <div class="hero-planner-intro">
-          <h1>PlanYour Perfect Day</h1>
+          <h1>Plan Your Perfect Day</h1>
         </div>
         <article id="dailyThought" class="dailythought" aria-label="Highland Thought for Today">
           <div class="dailythought__mark" aria-hidden="true">
@@ -305,6 +305,13 @@
 
     <footer>
       <div class="footer__tools">
+        <section id="installPanel" class="install-panel" aria-label="Install on your phone">
+          <div>
+            <span>Install on your phone</span>
+            <p id="installHelp">Open this site on your phone to add it to your Home Screen.</p>
+          </div>
+          <button id="installButton" type="button" hidden>Install</button>
+        </section>
         <div class="theme-toggle" role="group" aria-label="Colour mode">
           <button type="button" data-theme-choice="auto" aria-pressed="true">Auto</button>
           <button type="button" data-theme-choice="light" aria-pressed="false">Light</button>
@@ -323,6 +330,6 @@
     <script src="scripts/rain-chart.js?v=20260701-9"></script>
     <script src="scripts/date-facts.js?v=20260701-9"></script>
     <script src="scripts/app-boot.js?v=20260701-10"></script>
-    <script src="scripts/pwa.js?v=20260701-1"></script>
+    <script src="scripts/pwa.js?v=20260701-2"></script>
   </body>
 </html>
