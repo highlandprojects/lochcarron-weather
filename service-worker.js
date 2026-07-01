@@ -1,11 +1,11 @@
-const CACHE_NAME = "lochcarron-weather-v1.0.5";
+const CACHE_NAME = "lochcarron-weather-v1.0.6";
 
 const APP_SHELL = [
   "./",
   "./index.html",
   "./manifest.webmanifest",
   "./favicon.ico",
-  "./styles.css?v=20260701-15",
+  "./styles.css?v=20260701-16",
   "./data/weather-data.js",
   "./data/forecast.json",
   "./data/weather-3y.json",
@@ -13,7 +13,7 @@ const APP_SHELL = [
   "./scripts/app-state.js?v=20260701-9",
   "./scripts/theme-thoughts.js?v=20260701-9",
   "./scripts/data-loading.js?v=20260701-9",
-  "./scripts/live-weather.js?v=20260701-10",
+  "./scripts/live-weather.js?v=20260701-11",
   "./scripts/planner-tides.js?v=20260701-9",
   "./scripts/rain-chart.js?v=20260701-9",
   "./scripts/date-facts.js?v=20260701-9",
@@ -22,6 +22,15 @@ const APP_SHELL = [
   "./assets/lochcarron-hero-real.jpg",
   "./assets/social-card.png",
   "./assets/daylight-wide.png",
+  "./assets/live/weather-rain.png",
+  "./assets/live/weather-sunny.png",
+  "./assets/live/weather-cloudy.png",
+  "./assets/live/weather-windy.png",
+  "./assets/live/weather-fog.png",
+  "./assets/live/weather-snow.png",
+  "./assets/live/weather-night.png",
+  "./assets/live/pollen-bee.png",
+  "./assets/live/aurora-photo.png",
   "./assets/moon-phases-sprite-centered.png",
   "./assets/icons/apple-touch-icon.png",
   "./assets/icons/favicon-64.png",

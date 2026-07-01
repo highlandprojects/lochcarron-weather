@@ -110,7 +110,7 @@ function updateHeroToday() {
   const pollen = pollenEstimate(heroDate);
   const aurora = auroraEstimate(heroDate);
 
-  $("heroWeatherIcon").dataset.weather = weather ? liveWeatherScene(weather.weatherCode, weather.isDay) : "cloud";
+  updateHeroWeatherPhoto(weather);
   $("heroWeather").textContent = temp == null ? "Unavailable" : `${Math.round(temp)}°C`;
   $("heroCondition").textContent = weather ? weatherConditionLabel(weather.weatherCode) : "Live weather unavailable";
   $("heroFeelsLike").textContent = apparentTemp == null ? "Feels like unavailable" : `Feels like ${Math.round(apparentTemp)}°C`;
@@ -154,6 +154,36 @@ function updateHeroToday() {
   $("heroMoon").textContent = phase;
   $("heroMoonText").textContent = moonPhaseDescription(phase);
   $("heroMoonIcon").className = `moonphase ${moonPhaseClass(phase)}`;
+}
+
+function updateHeroWeatherPhoto(weather) {
+  const photo = $("heroWeatherPhoto");
+  if (!photo) return;
+  const img = photo.querySelector("img");
+  if (!img) return;
+  const asset = weatherPhotoAsset(weather);
+  photo.dataset.weather = asset.key;
+  img.src = asset.src;
+}
+
+function weatherPhotoAsset(weather) {
+  const code = weather?.weatherCode;
+  const windMph = weather?.wind == null ? 0 : kmhToMph(weather.wind);
+  const key = weatherPhotoKey(code, weather?.isDay, windMph);
+  return {
+    key,
+    src: `assets/live/weather-${key}.png`
+  };
+}
+
+function weatherPhotoKey(code, isDay, windMph = 0) {
+  if (isDay === false) return "night";
+  if (windMph >= 26 || code >= 95) return "windy";
+  if ([45, 48].includes(code)) return "fog";
+  if ((code >= 71 && code <= 77) || (code >= 85 && code <= 86)) return "snow";
+  if ((code >= 51 && code <= 67) || (code >= 80 && code <= 82)) return "rain";
+  if (code === 0 || code === 1) return "sunny";
+  return "cloudy";
 }
 
 function pollenEstimate(dateString) {

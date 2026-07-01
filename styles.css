@@ -565,6 +565,25 @@ h2 {
   stroke-linejoin: round;
 }
 
+.live-now-card__photo {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  max-height: 172px;
+  margin: 0 0 20px;
+  overflow: hidden;
+  border: 1px solid color-mix(in srgb, var(--line) 70%, transparent);
+  border-radius: 8px;
+  background: var(--soft-chip);
+  box-shadow: inset 0 0 0 1px color-mix(in srgb, #ffffff 38%, transparent);
+}
+
+.live-now-card__photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .pollen-card .live-now-card__icon {
   color: var(--moss);
 }
