@@ -110,6 +110,7 @@ a {
   left: 0;
   right: 0;
   display: flex;
+  align-items: center;
   justify-content: space-between;
   gap: 16px;
   padding: 22px clamp(18px, 5vw, 70px);
@@ -151,9 +152,18 @@ a {
 }
 
 .topbar strong {
+  display: block;
   max-width: 560px;
   font-size: clamp(1.45rem, 3vw, 2.35rem);
-  line-height: 1;
+  line-height: 1.02;
+}
+
+.topbar strong span {
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .localclock {
@@ -192,15 +202,40 @@ a {
 .hero__content {
   position: relative;
   z-index: 1;
-  width: min(1040px, 100%);
-  padding: clamp(92px, 12vh, 128px) clamp(18px, 5vw, 70px) 9vh;
+  width: min(1180px, 100%);
+  padding: clamp(110px, 14vh, 150px) clamp(18px, 5vw, 70px) 8vh;
   color: #fff;
+}
+
+.hero-planner-intro {
+  max-width: 900px;
+  margin-bottom: clamp(18px, 3vw, 34px);
+}
+
+.hero-planner-intro .kicker {
+  color: #f1c75b;
+  text-shadow: 0 2px 12px rgba(7, 22, 25, 0.45);
+}
+
+.hero-planner-intro h1 {
+  max-width: 900px;
+  text-shadow: 0 8px 34px rgba(7, 22, 25, 0.42);
+}
+
+.hero-planner-intro > p:not(.kicker) {
+  max-width: 760px;
+  margin: 18px 0 0;
+  color: rgba(255, 255, 255, 0.86);
+  font-size: clamp(1.05rem, 1.7vw, 1.28rem);
+  font-weight: 620;
+  line-height: 1.55;
+  text-shadow: 0 3px 18px rgba(7, 22, 25, 0.38);
 }
 
 .dailythought {
   position: relative;
-  margin: 0 0 18px;
-  padding: clamp(18px, 2.4vw, 26px);
+  margin: 0 0 16px;
+  padding: clamp(14px, 2vw, 20px) clamp(18px, 2.4vw, 26px);
   overflow: hidden;
   border: 1px solid rgba(255, 255, 255, 0.34);
   border-radius: 8px;
@@ -233,7 +268,7 @@ a {
   margin: 0;
   max-width: 840px;
   color: var(--ink);
-  font-size: clamp(1.18rem, 2.5vw, 1.85rem);
+  font-size: clamp(1.05rem, 1.9vw, 1.45rem);
   font-weight: 850;
   line-height: 1.18;
 }
@@ -272,7 +307,7 @@ h2 {
 
 .hero__content .dailythought p {
   max-width: 840px;
-  font-size: clamp(1.18rem, 2.5vw, 1.85rem);
+  font-size: clamp(1.05rem, 1.9vw, 1.45rem);
   font-weight: 850;
   line-height: 1.18;
 }
@@ -2262,7 +2297,15 @@ html[data-theme="dark"] .moonphase {
   }
 
   .hero__content {
-    padding-top: 146px;
+    padding-top: 170px;
+  }
+
+  .hero-planner-intro {
+    margin-bottom: 18px;
+  }
+
+  .hero-planner-intro h1 {
+    font-size: clamp(2.8rem, 12vw, 4.6rem);
   }
 
   .live-now-dashboard {

@@ -18,7 +18,7 @@
         }
       })();
     </script>
-    <link rel="stylesheet" href="styles.css?v=20260701-3">
+    <link rel="stylesheet" href="styles.css?v=20260701-8">
   </head>
   <body>
     <div id="dataNotice" class="statusnotice" hidden></div>
@@ -26,7 +26,7 @@
       <img src="assets/lochcarron-hero-real.jpg" alt="Lochcarron village shoreline beside Loch Carron" class="hero__image">
       <div class="hero__shade"></div>
       <nav class="topbar" aria-label="Primary">
-        <strong>Lochcarron Weather Planner.</strong>
+        <strong><span>Lochcarron</span> Weather Planner.</strong>
         <span id="lochcarronClock" class="localclock" aria-label="Current date and time in Lochcarron">Lochcarron time</span>
         <div class="theme-toggle" role="group" aria-label="Colour mode">
           <button type="button" data-theme-choice="auto" aria-pressed="true">Auto</button>
@@ -35,6 +35,10 @@
         </div>
       </nav>
       <section class="hero__content">
+        <div class="hero-planner-intro">
+          <h1>Plan the right time for shore, hill and water.</h1>
+          <p>Live conditions, forecast rain and tide timing in one place for visitors choosing when to walk, paddle, photograph or simply arrive well prepared.</p>
+        </div>
         <article id="dailyThought" class="dailythought" aria-label="Highland Thought for Today">
           <div>
             <span id="dailyThoughtCategory">Daily Thought</span>
@@ -358,6 +362,13 @@
     </footer>
 
     <script src="data/weather-data.js"></script>
-    <script src="app.js?v=20260701-3"></script>
+    <script src="scripts/app-state.js?v=20260701-4"></script>
+    <script src="scripts/theme-thoughts.js?v=20260701-4"></script>
+    <script src="scripts/data-loading.js?v=20260701-4"></script>
+    <script src="scripts/live-weather.js?v=20260701-4"></script>
+    <script src="scripts/planner-tides.js?v=20260701-4"></script>
+    <script src="scripts/rain-chart.js?v=20260701-4"></script>
+    <script src="scripts/date-facts.js?v=20260701-4"></script>
+    <script src="scripts/app-boot.js?v=20260701-4"></script>
   </body>
 </html>
